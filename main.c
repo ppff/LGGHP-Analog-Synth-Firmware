@@ -111,7 +111,8 @@ void sendData(uint8_t* data){
 	HAL_SPI_Transmit(&hspi1,dataByte,3,100);
 }
 
-void noteTodata(uint8_t* data, uint8_t note){
+void noteTodata(uint8_t* data, midiParams * params){
+	uint8_t note=params->note;
 	switch (note){
 		case 38:
 			data[0]=...;
@@ -148,6 +149,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   midiParams midiparams;
+  uint8_t data[2];
 
   /* USER CODE END 2 */
 
@@ -159,8 +161,8 @@ int main(void)
 
   /* USER CODE BEGIN 3 */
 	  midiRead(&midiparams);
-	  if (midiparams.note == 60)
-		  HAL_GPIO_WritePin(GPIOD, LD4_Pin, midiparams.mode);
+	  noteTodata(&data,&midiparams);
+	  senddata(&data);
   }
   /* USER CODE END 3 */
 
